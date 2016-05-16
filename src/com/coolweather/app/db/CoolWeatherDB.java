@@ -35,16 +35,17 @@ public class CoolWeatherDB {
 	}
 	
 	/**
-	 * 将Province实例存储到数据库
+	 * 将省份信息保存到数据库
 	 * @param province
 	 */
-	public void saveProvince(Province province) {
+	public long saveProvince(Province province) {
 		if(province != null) {
 			ContentValues values = new ContentValues();
 			values.put("province_name", province.getProvinceName());
 			values.put("province_code", province.getProvinceCode());
-			db.insert("Province", null, values);
+			return db.insert("Province", null, values);
 		}
+		return -1;
 	}
 	
 	/**
@@ -66,16 +67,26 @@ public class CoolWeatherDB {
 		return list;
 	}
 	
-	public void saveCity(City city) {
+	/**
+	 * 保存城市信息到数据库
+	 * @param city
+	 */
+	public long saveCity(City city) {
 		if(city != null) {
 			ContentValues values = new ContentValues();
 			values.put("city_name", city.getCityName());
 			values.put("city_code", city.getCityCode());
 			values.put("province_id", city.getProvinceId());
-			db.insert("City", null, values);
+			return db.insert("City", null, values);
 		}
+		return -1;
 	}
 	
+	/**
+	 * 从数据库读取全国的城市信息
+	 * @param provinceId
+	 * @return
+	 */
 	public List<City> loadCities(int provinceId) {
 		List<City> list = new ArrayList<City>();
 		Cursor cursor = db.query("City", null, "province_id = ?", new String[] {String.valueOf(provinceId)}, null, null, null);
@@ -92,16 +103,26 @@ public class CoolWeatherDB {
 		return list;
 	}
 	
-	public void saveCounty(County county) {
+	/**
+	 * 保存县信息到数据库
+	 * @param county
+	 */
+	public long saveCounty(County county) {
 		if(county != null) {
 			ContentValues values = new ContentValues();
 			values.put("count_name", county.getCountyName());
 			values.put("county_code", county.getCountyCode());
 			values.put("city_id", county.getCityId());
-			db.insert("County", null, values);
+			return db.insert("County", null, values);
 		}
+		return -1;
 	}
 	
+	/**
+	 * 从数据库读取全国的县信息
+	 * @param cityId
+	 * @return
+	 */
 	public List<County> loadCounties(int cityId) {
 		List<County> list = new ArrayList<County>();
 		Cursor cursor = db.query("County", null, "city_id = ?", new String[] {String.valueOf(cityId)}, null, null, null);
