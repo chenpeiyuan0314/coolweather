@@ -1,10 +1,14 @@
 package com.coolweather.app.db;
 
+import java.io.File;
+
 import android.content.Context;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import com.coolweather.app.util.Utility;
 
 public class CoolWeatherOpenHelper extends SQLiteOpenHelper {
 
@@ -12,7 +16,7 @@ public class CoolWeatherOpenHelper extends SQLiteOpenHelper {
 	 * Province建表语句
 	 */
 	public static final String CREATE_PROVINCE = "CREATE TABLE Province (" +
-			"id INTEGER primary key autocrement, " +
+			"id INTEGER primary key autoincrement, " +
 			"province_name text, " +
 			"province_code text)";
 	/**
@@ -35,6 +39,7 @@ public class CoolWeatherOpenHelper extends SQLiteOpenHelper {
 	public CoolWeatherOpenHelper(Context context, String name,
 			CursorFactory factory, int version) {
 		super(context, name, factory, version);
+		this.context = context;
 	}
 
 	@Override
@@ -42,9 +47,17 @@ public class CoolWeatherOpenHelper extends SQLiteOpenHelper {
 		db.execSQL(CREATE_PROVINCE);
 		db.execSQL(CREATE_CITY);
 		db.execSQL(CREATE_COUNTY);
+		
+		Log.d(Tag, "Create Database!");
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		/*
+		Log.d(Tag, "Upgrade Database!");
+		*/
+	}
 
+	private static final String Tag = CoolWeatherOpenHelper.class.getName();
+	private Context context;
 }

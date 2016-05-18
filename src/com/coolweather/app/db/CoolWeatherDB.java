@@ -14,8 +14,8 @@ import com.coolweather.app.model.Province;
 
 public class CoolWeatherDB {
 
-	public static final String DB_NAME = "cool_weather";
-	public static final int VERSION = 1;
+	public static final String DB_NAME = "CoolWeather.db";
+	public static final int VERSION = 2;
 	
 	private CoolWeatherDB(Context context) {
 		CoolWeatherOpenHelper dbHelper = new CoolWeatherOpenHelper(context,DB_NAME,null,VERSION);
@@ -110,7 +110,7 @@ public class CoolWeatherDB {
 	public long saveCounty(County county) {
 		if(county != null) {
 			ContentValues values = new ContentValues();
-			values.put("count_name", county.getCountyName());
+			values.put("county_name", county.getCountyName());
 			values.put("county_code", county.getCountyCode());
 			values.put("city_id", county.getCityId());
 			return db.insert("County", null, values);
@@ -139,6 +139,7 @@ public class CoolWeatherDB {
 		return list;
 	}
 	
+	private static final String Tag = CoolWeatherDB.class.getName();
 	private static CoolWeatherDB coolWeatherDB;
 	private SQLiteDatabase db;
 }
