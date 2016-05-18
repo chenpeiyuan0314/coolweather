@@ -13,6 +13,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.coolweather.app.db.CoolWeatherDB;
 import com.coolweather.app.model.City;
@@ -63,21 +64,23 @@ public class Utility {
 	}
 	
 	/**
-	 * 
+	 * 解析城市信息并保存到数据库
 	 * @param file
+	 * @param context
 	 * @return
 	 */
-	public static void handleCityXml(File file, Context context) throws Exception {
-		final CoolWeatherDB coolWeatherDB = CoolWeatherDB.getInstance(context);
+	public static void handleCityXml(final CoolWeatherDB coolWeatherDB, Context context) throws Exception {
+		//final CoolWeatherDB coolWeatherDB = CoolWeatherDB.getInstance(context);
+		Log.d(Tag, "XML:[" + XML + "]");
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		SAXParser parser = factory.newSAXParser();
-		parser.parse(new InputSource(new FileInputStream(file)), new DefaultHandler() {
+		parser.parse(new InputSource(context.getClass().getClassLoader().getResourceAsStream(XML)), new DefaultHandler() {
 			private long provinceId = -1;
 			private long cityId = -1;
+			
 			@Override
 			public void startElement(String uri, String localName,
 					String qName, Attributes attributes) throws SAXException {
-				
 				String name = attributes.getValue(1);
 				String code = attributes.getValue(2);
 				if("province".equals(qName)) {
@@ -107,4 +110,7 @@ public class Utility {
 			
 		});
 	}
+	
+	private static final String XML = "assets/city.xml";
+	private static final String Tag = Utility.class.getName();
 }
